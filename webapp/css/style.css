@@ -1,0 +1,14 @@
+/* Enter your custom styles here */
+
+.txtStyle {
+    font-style: italic;
+}
+
+.columns .sapMFlexItem {
+    background-color: #ceddec;
+}
+
+.comboLabel {
+    margin-top: 9px;
+    font-size: 0.975rem;
+}

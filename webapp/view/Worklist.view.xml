@@ -1,0 +1,123 @@
+<mvc:View controllerName="merck.controller.Worklist" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core">
+	<App>
+		<pages>
+			<Page title="{i18n>appTitle}" showNavButton="true" navButtonPress="onBackHome">
+				<content>
+					<l:FixFlex minFlexSize="300">
+						<l:fixContent>
+							<fb:FilterBar id="filterBar" reset="onReset" clear="onClear" search="onFilterSearch" showRestoreButton="false" showClearButton="true">
+								<fb:filterItems>
+									<fb:FilterItem name="A" label="{i18n>labErpSys}">
+										<fb:control>
+											<ComboBox id="cbErpSys" items="{ path: '/DistinctERPSystems', sorter: { path: 'ERPSystem', descending: false } }" change="OnChangeErpsys">
+												<items>
+													<core:Item key="{ERPSystem}" text="{ERPSystem}"/>
+												</items>
+											</ComboBox>
+										</fb:control>
+									</fb:FilterItem>
+									<fb:FilterItem name="B" label="{i18n>labCompanycode}">
+										<fb:control>
+											<ComboBox id="cbCompanyCode" items="{ path: '/DistinctCompanyCodesWithERPSystems', sorter: { path: 'CompanyCode', descending: false } }">
+												<items>
+													<core:Item key="{CompanyCode}" text="{CompanyCode}"/>
+												</items>
+											</ComboBox>
+										</fb:control>
+									</fb:FilterItem>
+									<fb:FilterItem name="D" label="{i18n>labCountry}">
+										<fb:control>
+											<ComboBox id="cbCountry" items="{ path: '/DistinctCountrys', sorter: { path: 'Country', descending: false } }">
+												<items>
+													<core:Item key="{Country}" text="{Country}"/>
+												</items>
+											</ComboBox>
+										</fb:control>
+									</fb:FilterItem>
+									<fb:FilterItem name="C" label="{i18n>labSentForPayment}">
+										<fb:control>
+											<ComboBox id="cbSentForPayment" items="{ path: '/DistinctSentForPaymentDates', sorter: { path: 'SentForPaymentDate', descending: true } }"
+												placeholder="{i18n>txtDateFormat}">
+												<items>
+													<core:Item key="{SentForPaymentDate}"
+														text="{path: 'SentForPaymentDate', type: 'sap.ui.model.type.Date', formatOptions:{pattern: 'dd.MM.yyyy'}}"/>
+												</items>
+											</ComboBox>
+										</fb:control>
+									</fb:FilterItem>
+									<fb:FilterItem name="F" label="{i18n>labProcessState}">
+										<fb:control>
+											<ComboBox id="cbBoStatus" items="{ path: '/BackOfficeStatus', sorter: { path: 'Sort', descending: false } }">
+												<items>
+													<core:Item key="{BackOfficeStatus}" text="{BackOfficeStatus}"/>
+												</items>
+											</ComboBox>
+										</fb:control>
+									</fb:FilterItem>
+								</fb:filterItems>
+							</fb:FilterBar>
+							<FlexBox alignItems="Start" justifyContent="End">
+								<items>
+									<Button text="{i18n>btnClearFilter}" icon="sap-icon://clear-filter" press="onClear"></Button>
+								</items>
+							</FlexBox>
+						</l:fixContent>
+						<l:flexContent>
+							<Table id="table" width="auto" items="{ path: '/ReconciliationReport', sorter: { path: 'SentForPaymentDate', descending: true } }"
+								noDataText="{worklistView>/tableNoDataText}" busyIndicatorDelay="{worklistView>/tableBusyDelay}" growing="true" growingScrollToLoad="true"
+								updateFinished="onUpdateFinished" templateShareable="true">
+								<headerToolbar>
+									<Toolbar>
+										<Title id="tableHeader" text="{worklistView>/worklistTableTitle}"/>
+										<ToolbarSpacer/>
+										<SearchField id="searchField" width="40%" placeholder="{i18n>txtSearcherr}" enableSuggestions="true" search="onSearch" suggest="onSuggest"
+											suggestionItems="{eprErrModel>/results}">
+											<suggestionItems>
+												<SuggestionItem text="{eprErrModel>ERPError}"/>
+											</suggestionItems>
+										</SearchField>
+										<Button id="btnExcel" icon="sap-icon://excel-attachment" press="onExcel" text="{i18n>btnExcel}" type="Transparent"></Button>
+									</Toolbar>
+								</headerToolbar>
+								<columns>
+									<Column width="15em">
+										<Text text="{i18n>tableNameColumnTitle1}"/>
+									</Column>
+									<Column width="7em">
+										<Text text="{i18n>tableNameColumnTitle2}"/>
+									</Column>
+									<Column width="7em">
+										<Text text="{i18n>tableNameColumnTitle3}"/>
+									</Column>
+									<Column width="7em">
+										<Text text="{i18n>tableNameColumnTitle4}"/>
+									</Column>
+									<Column width="20em">
+										<Text text="{i18n>tableNameColumnTitle5}"/>
+									</Column>
+									<Column width="10em">
+										<Text text="{i18n>tableNameColumnTitle6}"/>
+									</Column>
+								</columns>
+								<items>
+									<ColumnListItem type="Navigation" press="onPress">
+										<cells>
+											<ObjectIdentifier title="{ReportID}"/>
+											<!--	<Text text="{ReportID}"/>-->
+											<Text text="{CompanyCode}"/>
+											<Text text="{ERPSystem}"/>
+											<Text text="{path: 'SentForPaymentDate', type: 'sap.ui.model.type.Date', formatOptions:{pattern: 'dd.MM.yyyy'}}"/>
+											<Text text="{ERPError}"/>
+											<Text text="{BackOfficeStatus}"/>
+										</cells>
+									</ColumnListItem>
+								</items>
+							</Table>
+						</l:flexContent>
+					</l:FixFlex>
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>

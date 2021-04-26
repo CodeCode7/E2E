@@ -1,0 +1,159 @@
+{
+	"_version": "1.4.0",
+	"sap.app": {
+		"id": "merck",
+		"type": "application",
+		"i18n": "i18n/i18n.properties",
+		"title": "{{appTitle}}",
+		"description": "{{appDescription}}",
+		"applicationVersion": {
+			"version": "1.0.0"
+		},
+		"dataSources": {
+			"mainService": {
+				"uri": "/HANAXS/com/merckgroup/corr/services/odata/corr.xsodata/",
+				"type": "OData",
+				"settings": {
+					"odataVersion": "2.0",
+					"localUri": "localService/metadata.xml"
+				}
+			}
+		},
+		"sourceTemplate": {
+			"id": "sap.ui.ui5-template-plugin.1worklist",
+			"version": "1.42.0"
+		}
+	},
+	"sap.ui": {
+		"technology": "UI5",
+		"icons": {
+			"icon": "sap-icon://task",
+			"favIcon": "",
+			"phone": "",
+			"phone@2": "",
+			"tablet": "",
+			"tablet@2": ""
+		},
+		"deviceTypes": {
+			"desktop": true,
+			"tablet": true,
+			"phone": true
+		},
+		"supportedThemes": [
+			"sap_hcb",
+			"sap_belize"
+		]
+	},
+	"sap.ui5": {
+		"rootView": {
+			"viewName": "merck.view.App",
+			"type": "XML",
+			"id": "app"
+		},
+		"dependencies": {
+			"minUI5Version": "1.42.0",
+			"libs": {
+				"sap.ui.core": {
+					"minVersion": "1.42.0"
+				},
+				"sap.m": {
+					"minVersion": "1.42.0"
+				}
+
+			}
+		},
+		"contentDensities": {
+			"compact": true,
+			"cozy": true
+		},
+		"models": {
+			"i18n": {
+				"type": "sap.ui.model.resource.ResourceModel",
+				"settings": {
+					"bundleName": "merck.i18n.i18n"
+				}
+			},
+			"": {
+				"dataSource": "mainService",
+				"preload": true
+			}
+		},
+		"routing": {
+			"config": {
+				"routerClass": "sap.m.routing.Router",
+				"viewType": "XML",
+				"viewPath": "merck.view",
+				"controlId": "app",
+				"controlAggregation": "pages",
+				"bypassed": {
+					"target": [
+						"notFound"
+					]
+				},
+				"async": true
+			},
+			"routes": [{
+				"pattern": "",
+				"name": "home",
+				"target": [
+					"home"
+				]
+			}, {
+				"pattern": "wlstatus/{status}",
+				"name": "wlstatus",
+				"target": [
+					"worklist"
+				]
+			}, {
+				"pattern": "wltable/{colval}/{odataparam1}/{odataparam2}",
+				"name": "wltable",
+				"target": [
+					"worklist"
+				]
+			}, {
+				"pattern": "ReconciliationReport/{objectId}",
+				"name": "object",
+				"target": [
+					"object"
+				]
+			}],
+			"targets": {
+				"home": {
+					"viewName": "Home",
+					"viewId": "home",
+					"viewLevel": 1,
+					"title": "{i18n>worklistViewTitle}"
+				},
+				"worklist": {
+					"viewName": "Worklist",
+					"viewId": "worklist",
+					"viewLevel": 2,
+					"title": "{i18n>worklistViewTitle}"
+				},
+				"object": {
+					"viewName": "Object",
+					"viewId": "object",
+					"viewLevel": 3,
+					"title": "{i18n>objectViewTitle}"
+				},
+				"objectNotFound": {
+					"viewName": "ObjectNotFound",
+					"viewId": "objectNotFound"
+				},
+				"notFound": {
+					"viewName": "NotFound",
+					"viewId": "notFound"
+				}
+			}
+		}
+	},
+	"sap.platform.hcp": {
+		"uri": "webapp",
+		"_version": "1.1.0"
+	},
+	"resources": {
+		"css": [{
+			"uri": "css/style.css"
+		}]
+	}
+}

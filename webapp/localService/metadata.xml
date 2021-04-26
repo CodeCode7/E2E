@@ -1,0 +1,64 @@
+<edmx:Edmx xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" Version="1.0">
+	<edmx:DataServices xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" m:DataServiceVersion="2.0">
+		<Schema xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices"
+			xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns="http://schemas.microsoft.com/ado/2008/09/edm"
+			Namespace="com.merckgroup.corr.services.odata.corr">
+			<EntityType Name="ReconciliationReportType">
+				<Key>
+					<PropertyRef Name="ReportID"/>
+				</Key>
+				<Property Name="ReleaseDate" Type="Edm.String" MaxLength="10"/>
+				<Property Name="CompanyCode" Type="Edm.String" MaxLength="4"/>
+				<Property Name="CompanyCodeEmployee" Type="Edm.String" MaxLength="4"/>
+				<Property Name="ConcurPaymentStatus" Type="Edm.String" MaxLength="16"/>
+				<Property Name="ConcurReportKey" Type="Edm.Int32"/>
+				<Property Name="DaysOutstanding" Type="Edm.Int32"/>
+				<Property Name="ERPError" Type="Edm.String" MaxLength="10"/>
+				<Property Name="ERPPaymentStatus" Type="Edm.String" MaxLength="11"/>
+				<Property Name="ERPSystem" Type="Edm.String" MaxLength="6"/>
+				<Property Name="ERPSystemLong" Type="Edm.String" MaxLength="9"/>
+				<Property Name="InvoiceDate" Type="Edm.String" MaxLength="10"/>
+				<Property Name="InvoiceStatus" Type="Edm.String" MaxLength="10"/>
+				<Property Name="OracleCompanyCode" Type="Edm.String" MaxLength="10"/>
+				<Property Name="OracleVendorID" Type="Edm.String" MaxLength="10"/>
+				<Property Name="PaymentFeedback" Type="Edm.String" MaxLength="7"/>
+				<Property Name="PaymentMethodERP" Type="Edm.String" MaxLength="10"/>
+				<Property Name="PaymentType" Type="Edm.String" MaxLength="63"/>
+				<Property Name="ReportDate" Type="Edm.String" MaxLength="10"/>
+				<Property Name="ReportID" Type="Edm.String" Nullable="false" MaxLength="20"/>
+				<Property Name="SentForPaymentDate" Type="Edm.String" MaxLength="10"/>
+				<Property Name="VendorID" Type="Edm.String" MaxLength="13"/>
+				<Property Name="VendorIDEmployeeProfile" Type="Edm.String" MaxLength="13"/>
+				<Property Name="VendorIDReportHeader" Type="Edm.String" MaxLength="9"/>
+				<Property Name="VendorValidation" Type="Edm.String" MaxLength="2"/>
+				<Property Name="Country" Type="Edm.String" MaxLength="20"/>
+				<Property Name="BackOfficeStatus" Type="Edm.String" MaxLength="20"/>
+				<NavigationProperty Name="Comments" Relationship="com.merckgroup.corr.services.odata.corr.CommentsType"
+					FromRole="ReconciliationReportPrincipal" ToRole="ReconciliationReportCommentDependent"/>
+			</EntityType>
+			<EntityType Name="ReconciliationReportCommentType">
+				<Key>
+					<PropertyRef Name="ReportID"/>
+					<PropertyRef Name="Timestamp"/>
+				</Key>
+				<Property Name="Comment" Type="Edm.String" MaxLength="1000"/>
+				<Property Name="ReportID" Type="Edm.String" Nullable="false" MaxLength="20"/>
+				<Property Name="Timestamp" Type="Edm.DateTime" Nullable="false"/>
+				<Property Name="UserID" Type="Edm.String" MaxLength="20"/>
+			</EntityType>
+			<Association Name="CommentsType">
+				<End Type="com.merckgroup.corr.services.odata.corr.ReconciliationReportType" Role="ReconciliationReportPrincipal" Multiplicity="1"/>
+				<End Type="com.merckgroup.corr.services.odata.corr.ReconciliationReportCommentType" Role="ReconciliationReportCommentDependent"
+					Multiplicity="*"/>
+			</Association>
+			<EntityContainer Name="corr" m:IsDefaultEntityContainer="true">
+				<EntitySet Name="ReconciliationReport" EntityType="com.merckgroup.corr.services.odata.corr.ReconciliationReportType"/>
+				<EntitySet Name="ReconciliationReportComment" EntityType="com.merckgroup.corr.services.odata.corr.ReconciliationReportCommentType"/>
+				<AssociationSet Name="Comments" Association="com.merckgroup.corr.services.odata.corr.CommentsType">
+					<End Role="ReconciliationReportPrincipal" EntitySet="ReconciliationReport"/>
+					<End Role="ReconciliationReportCommentDependent" EntitySet="ReconciliationReportComment"/>
+				</AssociationSet>
+			</EntityContainer>
+		</Schema>
+	</edmx:DataServices>
+</edmx:Edmx>

@@ -1,0 +1,113 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" controllerName="merck.controller.Home" displayBlock="true" xmlns="sap.m" xmlns:core="sap.ui.core"
+	height="100%" xmlns:l="sap.ui.layout" xmlns:viz="sap.viz.ui5.controls" xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+	xmlns:viz.data="sap.viz.ui5.data" xmlns:suite="sap.suite.ui.commons">
+	<App>
+		<pages>
+			<Page title="{i18n>HomePageTitle}">
+				<content>
+					<l:FixFlex minFlexSize="300">
+						<l:fixContent>
+							<l:Grid defaultSpan="L6 M6 S12">
+								<Table id="table" items="{ path: '/RemediationStatusOverview', sorter: { path: 'Sort', descending: false }}"
+									updateFinished="onUpdateFinished">
+									<headerToolbar>
+										<Toolbar>
+											<Title id="tableHeader" text="{i18n>HomeTableTittle}"/>
+											<ToolbarSpacer/>
+										</Toolbar>
+									</headerToolbar>
+									<columns>
+										<Column >
+											<Text text="{i18n>HometableNameColumnTitle1}"/>
+										</Column>
+										<Column hAlign="Center">
+											<Text text="{i18n>HometableNameColumnTitle2}"/>
+										</Column>
+									</columns>
+									<items>
+										<ColumnListItem type="Navigation" press="onPress">
+											<cells>
+												<Text text="{BackOfficeStatus}"/>
+												<Text text="{CountReports}" textAlign="End"/>
+											</cells>
+										</ColumnListItem>
+									</items>
+								</Table>
+								<suite:ChartContainer id="idChartContainer" title="{i18n>titleChat}" showFullScreen="true" showPersonalization="false"
+									autoAdjustHeight="false" showLegend="true">
+									<suite:content>
+										<suite:ChartContainerContent icon="sap-icon://vertical-bar-chart">
+											<suite:content>
+												<viz:Popover id="idPopOver"></viz:Popover>
+												<viz:VizFrame id="idVizFrame" uiConfig="{applicationSet:'fiori'}" height='250px' vizType='stacked_combination'>
+													<viz:dataset>
+														<viz.data:FlattenedDataset data="{/RemediationStatusStatistics}">
+															<viz.data:dimensions>
+																<viz.data:DimensionDefinition name="Last 30 days"
+																	value="{path:'DataServiceReportDate' , type:'sap.ui.model.type.Date', formatOptions:{pattern: 'dd.MM.',style: 'short'}}"/>
+															</viz.data:dimensions>
+															<viz.data:measures>
+																<viz.data:MeasureDefinition name="TER Total" value="{All}"/>
+																<viz.data:MeasureDefinition name="TER 5+days" value="{Over5Days}"/>
+																<viz.data:MeasureDefinition name="TER Recent" value="{Under5Days}"/>
+															</viz.data:measures>
+														</viz.data:FlattenedDataset>
+													</viz:dataset>
+													<viz:feeds>
+														<viz.feeds:FeedItem uid="valueAxis" type="Measure" values="TER Total"/>
+														<viz.feeds:FeedItem uid="valueAxis" type="Measure" values="TER 5+days"/>
+														<viz.feeds:FeedItem uid="valueAxis" type="Measure" values="TER Recent"/>
+														<viz.feeds:FeedItem id="feedCategoryAxis" uid="categoryAxis" type="Dimension" values="Last 30 days"/>
+													</viz:feeds>
+												</viz:VizFrame>
+											</suite:content>
+										</suite:ChartContainerContent>
+									</suite:content>
+								</suite:ChartContainer>
+							</l:Grid>
+						</l:fixContent>
+						<l:flexContent>
+							<Table id="table2" items="{ path: '/RemediationStatusByCompanyCode', sorter: { path: 'Country', descending: false }}"
+								includeItemInSelection="true">
+								<headerToolbar>
+									<Toolbar>
+										<Title id="tableHeader2" text="{i18n>HomeTableTittle2}"/>
+										<ToolbarSpacer/>
+									</Toolbar>
+								</headerToolbar>
+								<columns>
+									<Column mergeDuplicates="true">
+										<Text text="{i18n>HometableNameColumnTitle21}"/>
+									</Column>
+									<Column >
+										<Text text="{i18n>HometableNameColumnTitle22}"/>
+									</Column>
+									<Column hAlign="Center">
+										<Text text="{i18n>HometableNameColumnTitle23}"/>
+									</Column>
+									<Column hAlign="Center">
+										<Text text="{i18n>HometableNameColumnTitle24}"/>
+									</Column>
+									<Column hAlign="Center">
+										<Text text="{i18n>HometableNameColumnTitle25}"/>
+									</Column>
+								</columns>
+								<items>
+									<ColumnListItem >
+										<cells>
+											<Link text="{Country}" press="onPressCountry" emphasized="true"/>
+											<Link text="{CompanyCode}" press="onPressCompanyCode"/>
+											<Link text="{Open}" press="onPressOpen"/>
+											<Link text="{InProgress}" press="onPressInProgress"/>
+											<Link text="{Done}" press="onPressDone"/>
+										</cells>
+									</ColumnListItem>
+								</items>
+							</Table>
+						</l:flexContent>
+					</l:FixFlex>
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>

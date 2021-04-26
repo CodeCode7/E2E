@@ -1,0 +1,163 @@
+<mvc:View xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:m="sap.m" xmlns:layout="sap.ui.layout" controllerName="merck.controller.Object"
+	xmlns:form="sap.ui.layout.form" xmlns:core="sap.ui.core">
+	<m:Page title="{i18n>ObjTitle}" showHeader="true" showFooter="true" showNavButton="true" navButtonPress="onNavBack">
+		<m:content>
+			<m:ObjectHeader intro="{i18n>objTitle}" title="{ReportID}"
+				number="{path: 'SentForPaymentDate', type: 'sap.ui.model.type.Date', formatOptions:{pattern: 'dd.MM.yyyy'}}" numberUnit="SentForPayment"
+				numberState="None" showMarkers="false" markFavorite="false" markFlagged="false" backgroundDesign="Transparent" condensed="false">
+				<m:attributes>
+					<m:ObjectAttribute title="{i18n>txtCountry}" text="{Country}" active="false"/>
+					<m:ObjectAttribute title="{i18n>txtCompanycode}" text="{CompanyCode}" active="false"/>
+					<m:ObjectAttribute title="{i18n>txtERPSystem}" text="{ERPSystem}" active="false"/>
+				</m:attributes>
+				<m:statuses>
+					<m:ObjectStatus title="{i18n>txtError}" text="{ERPError}"/>
+					<m:ObjectStatus title="{i18n>txtStatus}" text="{BackOfficeStatus}"/>
+				</m:statuses>
+			</m:ObjectHeader>
+		</m:content>
+		<m:IconTabBar expandable="false" expanded="true" applyContentPadding="false" backgroundDesign="Solid" upperCase="false" visible="true"
+			selectedKey="Ok">
+			<m:items>
+				<m:IconTabFilter icon="sap-icon://hint" iconColor="Blue" text="{i18n>iconStatustxt}" design="Vertical" showAll="false" textDirection="Inherit"
+					enabled="true" visible="true" iconDensityAware="false">
+					<m:content>
+						<Panel class="sapUiContentPadding" headerText="{i18n>ObjectCommentsTabTitle}">
+							<content>
+								<List id="idCommentsList" noDataText="{i18n>ObjectCommentNoData}" showSeparators="Inner" items="{ path: 'Comments'}">
+									<FeedListItem info="{BackOfficeStatus}" text="{Comment}" timestamp="{Timestamp}"/>
+								</List>
+								<!--	<List id="idCommentsList" noDataText="{i18n>ObjectCommentNoData}" showSeparators="Inner"
+									items="{ path: 'Comments',  filters: [{ path: 'ExclusionFlag', operator: 'EQ', value1: ''}]}">
+									<FeedListItem info="{Comment}" text="{UserID}" timestamp="{Timestamp}"/>
+								</List>-->
+								<form:SimpleForm editable="true" layout="ResponsiveGridLayout">
+									<form:content>
+										<VBox class="columns">
+											<HBox>
+												<Text text="{i18n>labObjProcessState}"></Text>
+												<Label text=" "></Label>
+												<ComboBox id="idCb" xmlns:sap.ui.core="sap.ui.core" items="{ path: '/BackOfficeStatus', sorter: { path: 'Sort', descending: false } }"
+													change="OnStatusChange">
+													<items>
+														<sap.ui.core:ListItem text="{BackOfficeStatus}" key="{BackOfficeStatus}"/>
+													</items>
+												</ComboBox>
+												<Label text=" " width="10px"></Label>
+												<Text id="txtComment" class="txtStyle"></Text>
+											</HBox>
+											<FeedInput id="idpost" post="onPost"/>
+										</VBox>
+									</form:content>
+								</form:SimpleForm>
+							</content>
+						</Panel>
+					</m:content>
+				</m:IconTabFilter>
+				<m:IconTabSeparator icon="" iconDensityAware="false"/>
+				<m:IconTabFilter icon="sap-icon://notes" iconColor="Blue" text="{i18n>iconReporttxt}" count="" design="Vertical" showAll="false"
+					textDirection="Inherit" enabled="true" visible="true" iconDensityAware="false">
+					<m:content>
+						<Panel class="sapUiNoContentPadding" headerText="{i18n>ObjectDetailsTabTitle}">
+							<content>
+								<form:SimpleForm editable="false" layout="ResponsiveGridLayout" labelSpanL="5" labelSpanM="3" emptySpanL="4" emptySpanM="4" columnsL="2"
+									columnsM="2">
+									<form:content>
+										<core:Title text="{i18n>titleConCur}"></core:Title>
+										<Label text="{i18n>labERPSystemLong}" visible="{path:'ERPSystemLong',formatter: '.formatter.hideValue'}"/>
+										<Text text="{path:'ERPSystemLong'}" visible="{path:'ERPSystemLong',formatter: '.formatter.hideValue'}"/>
+										<Label text="{i18n>labConcurReportKey}" visible="{path:'ConcurReportKey',formatter: '.formatter.hideValue'}"/>
+										<Text text="{path:'ConcurReportKey'}" visible="{path:'ConcurReportKey',formatter: '.formatter.hideValue'}"/>
+										<Label text="{i18n>labReportDate}"/>
+										<Text text="{path: 'ReportDate', type: 'sap.ui.model.type.Date', formatOptions:{pattern: 'dd.MM.yyyy'}}"/>
+										<Label text="{i18n>labReleaseDate}"/>
+										<Text text="{path: 'ReleaseDate', type: 'sap.ui.model.type.Date', formatOptions:{pattern: 'dd.MM.yyyy'}}"/>
+										<Label text="{i18n>labVendorID}" visible="{path:'VendorID',formatter: '.formatter.hideValue'}"/>
+										<Text text="{path:'VendorID'}" visible="{path:'VendorID',formatter: '.formatter.hideValue'}"/>
+										<Label text="{i18n>labVendorIDAlternative}" visible="{path:'VendorIDAlternative',formatter: '.formatter.hideValue'}"/>
+										<Text text="{path:'VendorIDAlternative'}" visible="{path:'VendorIDAlternative',formatter: '.formatter.hideValue'}"/>
+										<Label text="{i18n>labBankVendorID}" visible="{path:'BankVendorID',formatter: '.formatter.hideValue'}"/>
+										<Text text="{path:'BankVendorID'}" visible="{path:'BankVendorID',formatter: '.formatter.hideValue'}"/>
+										<Label text="{i18n>labCompanyCodeEmployee}" visible="{path:'CompanyCodeEmployee',formatter: '.formatter.hideValue'}"/>
+										<Text text="{path:'CompanyCodeEmployee'}" visible="{path:'CompanyCodeEmployee',formatter: '.formatter.hideValue'}"/>
+										<Label text="{i18n>labValidationConcurERP}" visible="{path:'ValidationConcurERP',formatter: '.formatter.hideValue'}"/>
+										<Text text="{path:'ValidationConcurERP'}" visible="{path:'ValidationConcurERP',formatter: '.formatter.hideValue'}"/>
+										<Label text="{i18n>labValidationVendor}" visible="{path:'ValidationVendor',formatter: '.formatter.hideValue'}"/>
+										<Text text="{path:'ValidationVendor'}" visible="{path:'ValidationVendor',formatter: '.formatter.hideValue'}"/>
+										<Label text="{i18n>labConcurPaymentStatus}" visible="{path:'ConcurPaymentStatus',formatter: '.formatter.hideValue'}"/>
+										<Text text="{path:'ConcurPaymentStatus'}" visible="{path:'ConcurPaymentStatus',formatter: '.formatter.hideValue'}"/>
+										<Label text="{i18n>labERPPaymentStatus}" visible="{path:'ERPPaymentStatus',formatter: '.formatter.hideValue'}"/>
+										<Text text="{path:'ERPPaymentStatus'}" visible="{path:'ERPPaymentStatus',formatter: '.formatter.hideValue'}"/>
+										<Label text="{i18n>labDaysOutstanding}" visible="{path:'DaysOutstanding',formatter: '.formatter.hideValue'}"/>
+										<Text text="{path:'DaysOutstanding'}" visible="{path:'DaysOutstanding',formatter: '.formatter.hideValue'}"/>
+										<Label text="{i18n>labPaymentType}" visible="{path:'PaymentType',formatter: '.formatter.hideValue'}"/>
+										<Text text="{path:'PaymentType'}" visible="{path:'PaymentType',formatter: '.formatter.hideValue'}"/>
+										<core:Title text="{i18n>titleERP}"></core:Title>
+										<Label text="{i18n>labSAP_BKPF_BUKRS}" visible="{path:'SAP_BKPF_BUKRS',formatter: '.formatter.hideValue'}"/>
+										<Text text="{path:'SAP_BKPF_BUKRS'}" visible="{path:'SAP_BKPF_BUKRS',formatter: '.formatter.hideValue'}"/>
+										<Label text="{i18n>labSAP_BKPF_BELNR}" visible="{path:'SAP_BKPF_BELNR',formatter: '.formatter.hideValue'}"/>
+										<Text text="{path:'SAP_BKPF_BELNR'}" visible="{path:'SAP_BKPF_BELNR',formatter: '.formatter.hideValue'}"/>
+										<Label text="{i18n>labSAP_BKPF_GJAHR}" visible="{path:'SAP_BKPF_GJAHR',formatter: '.formatter.hideValue'}"/>
+										<Text text="{path:'SAP_BKPF_GJAHR'}" visible="{path:'SAP_BKPF_GJAHR',formatter: '.formatter.hideValue'}"/>
+										<Label text="{i18n>labSAP_BKPF_BLART}" visible="{path:'SAP_BKPF_BLART',formatter: '.formatter.hideValue'}"/>
+										<Text text="{path:'SAP_BKPF_BLART'}" visible="{path:'SAP_BKPF_BLART',formatter: '.formatter.hideValue'}"/>
+										<Label text="{i18n>labSAP_BKPF_XBLNR}" visible="{path:'SAP_BKPF_XBLNR',formatter: '.formatter.hideValue'}"/>
+										<Text text="{path:'SAP_BKPF_XBLNR'}" visible="{path:'SAP_BKPF_XBLNR',formatter: '.formatter.hideValue'}"/>
+										<Label text="{i18n>labSAP_BKPF_BKTXT}" visible="{path:'SAP_BKPF_BKTXT',formatter: '.formatter.hideValue'}"/>
+										<Text text="{path:'SAP_BKPF_BKTXT'}" visible="{path:'SAP_BKPF_BKTXT',formatter: '.formatter.hideValue'}"/>
+										<Label text="{i18n>labSAP_BKPF_GRPID}" visible="{path:'SAP_BKPF_GRPID',formatter: '.formatter.hideValue'}"/>
+										<Text text="{path:'SAP_BKPF_GRPID'}" visible="{path:'SAP_BKPF_GRPID',formatter: '.formatter.hideValue'}"/>
+										<Label text="{i18n>labSAP_BSEG_AUGDT}" visible="{path:'SAP_BSEG_AUGDT',formatter: '.formatter.hideValue'}"/>
+										<Text text="{path:'SAP_BSEG_AUGDT'}" visible="{path:'SAP_BSEG_AUGDT',formatter: '.formatter.hideValue'}"/>
+										<Label text="{i18n>labSAP_BSEG_AUGCP}" visible="{path:'SAP_BSEG_AUGCP',formatter: '.formatter.hideValue'}"/>
+										<Text text="{path:'SAP_BSEG_AUGCP'}" visible="{path:'SAP_BSEG_AUGCP',formatter: '.formatter.hideValue'}"/>
+										<Label text="{i18n>labSAP_BSEG_AUGBL}" visible="{path:'SAP_BSEG_AUGBL',formatter: '.formatter.hideValue'}"/>
+										<Text text="{path:'SAP_BSEG_AUGBL'}" visible="{path:'SAP_BSEG_AUGBL',formatter: '.formatter.hideValue'}"/>
+										<Label text="{i18n>labSAP_BSEG_BSCHL}" visible="{path:'SAP_BSEG_BSCHL',formatter: '.formatter.hideValue'}"/>
+										<Text text="{path:'SAP_BSEG_BSCHL'}" visible="{path:'SAP_BSEG_BSCHL',formatter: '.formatter.hideValue'}"/>
+										<Label text="{i18n>labSAP_BSEG_KOART}" visible="{path:'SAP_BSEG_KOART',formatter: '.formatter.hideValue'}"/>
+										<Text text="{path:'SAP_BSEG_KOART'}" visible="{path:'SAP_BSEG_KOART',formatter: '.formatter.hideValue'}"/>
+										<Label text="{i18n>labSAP_BSEG_SAKNR}" visible="{path:'SAP_BSEG_SAKNR',formatter: '.formatter.hideValue'}"/>
+										<Text text="{path:'SAP_BSEG_SAKNR'}" visible="{path:'SAP_BSEG_SAKNR',formatter: '.formatter.hideValue'}"/>
+										<Label text="{i18n>labSAP_BSEG_HKONT}" visible="{path:'SAP_BSEG_HKONT',formatter: '.formatter.hideValue'}"/>
+										<Text text="{path:'SAP_BSEG_HKONT'}" visible="{path:'SAP_BSEG_HKONT',formatter: '.formatter.hideValue'}"/>
+										<Label text="{i18n>labSAP_BSEG_LIFNR}" visible="{path:'SAP_BSEG_LIFNR',formatter: '.formatter.hideValue'}"/>
+										<Text text="{path:'SAP_BSEG_LIFNR'}" visible="{path:'SAP_BSEG_LIFNR',formatter: '.formatter.hideValue'}"/>
+										<Label text="{i18n>labSAP_REGUH_LAUFD}" visible="{path:'SAP_REGUH_LAUFD',formatter: '.formatter.hideValue'}"/>
+										<Text text="{path:'SAP_REGUH_LAUFD'}" visible="{path:'SAP_REGUH_LAUFD',formatter: '.formatter.hideValue'}"/>
+										<Label text="{i18n>labSAP_REGUH_LAUFI}" visible="{path:'SAP_REGUH_LAUFI',formatter: '.formatter.hideValue'}"/>
+										<Text text="{path:'SAP_REGUH_LAUFI'}" visible="{path:'SAP_REGUH_LAUFI',formatter: '.formatter.hideValue'}"/>
+										<Label text="{i18n>labERPErrorSAP}" visible="{path:'ERPErrorSAP',formatter: '.formatter.hideValue'}"/>
+										<Text text="{path:'ERPErrorSAP'}" visible="{path:'ERPErrorSAP',formatter: '.formatter.hideValue'}"/>
+										<Label text="{i18n>labSAP_LOG_ERR_HANDLING}" visible="{path:'SAP_LOG_ERR_HANDLING',formatter: '.formatter.hideValue'}"/>
+										<Text text="{path:'SAP_LOG_ERR_HANDLING'}" visible="{path:'SAP_LOG_ERR_HANDLING',formatter: '.formatter.hideValue'}"/>
+										<Label text="{i18n>labSAP_LOG_LARGE}" visible="{path:'SAP_LOG_LARGE',formatter: '.formatter.hideValue'}"/>
+										<Text text="{path:'SAP_LOG_LARGE'}" visible="{path:'SAP_LOG_LARGE',formatter: '.formatter.hideValue'}"/>
+										<Label text="{i18n>labSAP_LOG_STATUS_DOC}" visible="{path:'SAP_LOG_STATUS_DOC',formatter: '.formatter.hideValue'}"/>
+										<Text text="{path:'SAP_LOG_STATUS_DOC'}" visible="{path:'SAP_LOG_STATUS_DOC',formatter: '.formatter.hideValue'}"/>
+										<Label text="{i18n>labSAP_LOG_STATUS_FILE}" visible="{path:'SAP_LOG_STATUS_FILE',formatter: '.formatter.hideValue'}"/>
+										<Text text="{path:'SAP_LOG_STATUS_FILE'}" visible="{path:'SAP_LOG_STATUS_FILE',formatter: '.formatter.hideValue'}"/>
+										<Label text="{i18n>labSAP_LOG_STATUS_ARCH}" visible="{path:'SAP_LOG_STATUS_ARCH',formatter: '.formatter.hideValue'}"/>
+										<Text text="{path:'SAP_LOG_STATUS_ARCH'}" visible="{path:'SAP_LOG_STATUS_ARCH',formatter: '.formatter.hideValue'}"/>
+										<Label text="{i18n>labOracleCompanyCode}" visible="{path:'OracleCompanyCode',formatter: '.formatter.hideValue'}"/>
+										<Text text="{path:'OracleCompanyCode'}" visible="{path:'OracleCompanyCode',formatter: '.formatter.hideValue'}"/>
+										<Label text="{i18n>labOracleVendorID}" visible="{path:'OracleVendorID',formatter: '.formatter.hideValue'}"/>
+										<Text text="{path:'OracleVendorID'}" visible="{path:'OracleVendorID',formatter: '.formatter.hideValue'}"/>
+										<Label text="{i18n>labOraclePaymentMethod}" visible="{path:'OraclePaymentMethod',formatter: '.formatter.hideValue'}"/>
+										<Text text="{path:'OraclePaymentMethod'}" visible="{path:'OraclePaymentMethod',formatter: '.formatter.hideValue'}"/>
+										<Label text="{i18n>labOracleInvoiceDate}" visible="{path:'OracleInvoiceDate',formatter: '.formatter.hideValue'}"/>
+										<Text text="{path:'OracleInvoiceDate'}" visible="{path:'OracleInvoiceDate',formatter: '.formatter.hideValue'}"/>
+										<Label text="{i18n>labOracleInvoiceStatus}" visible="{path:'OracleInvoiceStatus',formatter: '.formatter.hideValue'}"/>
+										<Text text="{path:'OracleInvoiceStatus'}" visible="{path:'OracleInvoiceStatus',formatter: '.formatter.hideValue'}"/>
+										<Label text="{i18n>labERPErrorOracle}" visible="{path:'ERPErrorOracle',formatter: '.formatter.hideValue'}"/>
+										<Text text="{path:'ERPErrorOracle'}" visible="{path:'ERPErrorOracle',formatter: '.formatter.hideValue'}"/>
+									</form:content>
+								</form:SimpleForm>
+							</content>
+						</Panel>
+					</m:content>
+				</m:IconTabFilter>
+			</m:items>
+		</m:IconTabBar>
+	</m:Page>
+</mvc:View>
